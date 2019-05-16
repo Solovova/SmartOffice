@@ -12,8 +12,9 @@ import com.solovova.smart_office_main.soviews.SensorButton
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
-import android.content.res.AssetManager
 import android.util.Log
+import com.microsoft.signalr.HubConnectionBuilder
+import org.json.JSONArray
 import org.json.JSONObject
 
 
@@ -33,45 +34,43 @@ class SensorContainer {
         this.app = _app
         this.sensorIndicatorDef = Def.getDef()
         this.testModeTestData = "on"
-    }
-
 
 
         //hub connection
-//        hubConnection = HubConnectionBuilder.create("http://10.0.2.2:5000/movehub").build()
-//        val mHubConnection = this.hubConnection
-//        if (mHubConnection != null) {
-//
-//            hubConnection?.on("SensorIndicatorChangeValueToApp" , { strJSON: String ->
-//                try {
-//                    Log.i("RECEIVE" , strJSON)
-//                    val sensorIndicatorDataRecord = SensorIndicatorDataRecord(JSONObject(strJSON))
-//                    app?.mainActivity?.runOnUiThread { this.eventDataIn(sensorIndicatorDataRecord) }
-//                } catch (e: Exception) {
-//                }
-//
-//            } , String::class.java)
-//
-//
-//            hubConnection?.on("AnswerStartSensorDataToApp" , { strJSONArray: String ->
-//                try {
-//                    Log.i("AnswerStartSensorData" , strJSONArray)
-//                    val jArray = JSONArray(strJSONArray)
-//                    val sensor = sensors[jArray.getString(0)]
-//                    if (sensor != null) {
-//                        sensor.deleteIndicators()
-//                        val testSensorIndicator = mutableListOf<SensorIndicatorTypeEnum>()
-//                        for (ind in 1 until jArray.length()) {
-//                            testSensorIndicator.add(SensorIndicatorTypeEnum.values()[jArray.getJSONObject(ind).getInt("indicatorTypeEnum")])
-//                        }
-//                        sensor.testGenerateData(testSensorIndicator)
-//                        sensor.createSensorIndicatorButton()
-//                    }
-//                } catch (e: Exception) {
-//                }
-//
-//            } , String::class.java)
-//        }
+        hubConnection = HubConnectionBuilder.create("http://10.0.2.2:5000/movehub").build()
+        val mHubConnection = this.hubConnection
+        if (mHubConnection != null) {
+
+            hubConnection?.on("SensorIndicatorChangeValueToApp", { strJSON: String ->
+                try {
+                    Log.i("RECEIVE", strJSON)
+                    val sensorIndicatorDataRecord = SensorIndicatorDataRecord(JSONObject(strJSON))
+                    app?.mainActivity?.runOnUiThread { this.eventDataIn(sensorIndicatorDataRecord) }
+                } catch (e: Exception) {
+                }
+
+            }, String::class.java)
+
+
+            hubConnection?.on("AnswerStartSensorDataToApp", { strJSONArray: String ->
+                try {
+                    Log.i("AnswerStartSensorData", strJSONArray)
+                    val jArray = JSONArray(strJSONArray)
+                    val sensor = sensors[jArray.getString(0)]
+                    if (sensor != null) {
+                        sensor.deleteIndicators()
+                        val testSensorIndicator = mutableListOf<SensorIndicatorTypeEnum>()
+                        for (ind in 1 until jArray.length()) {
+                            testSensorIndicator.add(SensorIndicatorTypeEnum.values()[jArray.getJSONObject(ind).getInt("indicatorTypeEnum")])
+                        }
+                        sensor.testGenerateData(testSensorIndicator)
+                        sensor.createSensorIndicatorButton()
+                    }
+                } catch (e: Exception) {
+                }
+
+            }, String::class.java)
+        }
 
         //end hub connection
 
@@ -90,8 +89,9 @@ class SensorContainer {
 //                    SystemClock.sleep(1000)
 //                }
 //            }
-   //     )
- //       this.myThread?.start()
+        //     )
+        //       this.myThread?.start()
+    }
 
     fun setViewContainer (viewContainer: LinearLayout) {
         this.viewContainer = viewContainer
