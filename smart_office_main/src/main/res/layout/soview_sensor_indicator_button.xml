@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ivMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <!--font 16-->
+    <TextView
+            android:id="@+id/textView_Up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="10dp"
+
+            android:includeFontPadding="false"
+            android:lineSpacingExtra="0dp"
+
+            android:text="Temperature"
+            android:textColor="@color/colorSOGrey"
+            android:fontFamily="@font/proximanova"
+
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    <!--font 40-->
+    <TextView
+            android:id="@+id/textView_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:includeFontPadding="false"
+            android:lineSpacingExtra="0dp"
+
+            android:text="30.16"
+            android:textColor="@color/colorSOBlack"
+
+            android:textSize="40sp"
+            android:typeface="normal"
+            android:fontFamily="@font/proximanova"
+            app:layout_constraintStart_toStartOf="@+id/textView_Up"
+            app:layout_constraintTop_toBottomOf="@+id/textView_Up"
+            />
+
+    <!--font 20-->
+    <TextView
+            android:id="@+id/textView_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@+id/textView_0"
+            android:text="℃"
+            android:textColor="@color/colorSOGrey"
+            android:textSize="20sp"
+            android:fontFamily="@font/proximanova"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textView_0"
+            app:layout_constraintStart_toEndOf="@+id/textView_0" />
+
+    <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toEndOf="@+id/textView_Up"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/ic_sensor_up" />
+
+    <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="40dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="50dp"
+            android:scaleType="fitCenter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView_0"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_0"
+            android:src="@drawable/ic_sensor_temperature"/>
+
+    <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="13dp"
+            android:layout_height="13dp"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/ic_sensor_pic_yellow"
+            app:layout_constraintStart_toStartOf="@+id/textView_0"
+            app:layout_constraintTop_toBottomOf="@+id/textView_0"
+    />
+
+    <!--font 12-->
+    <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="A bit dirty"
+            android:layout_marginStart="5dp"
+            android:textColor="@color/colorSOYellow"
+            android:fontFamily="@font/proximanova"
+            app:layout_constraintStart_toEndOf="@+id/imageView3"
+            app:layout_constraintTop_toBottomOf="@+id/textView_0" />
+
+    <!--font 12-->
+    <TextView
+            android:id="@+id/textViewEx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="A bit dirty"
+            android:textColor="@color/colorSOYellow"
+            android:fontFamily="@font/proximanova"
+            app:layout_constraintStart_toStartOf="@+id/textView_0"
+            app:layout_constraintTop_toBottomOf="@+id/textView_0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

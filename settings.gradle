@@ -1,0 +1,1 @@
+include ':smart_office_main', ':barcode-reader'
