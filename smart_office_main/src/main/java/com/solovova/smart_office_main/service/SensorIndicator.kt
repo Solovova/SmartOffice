@@ -5,8 +5,9 @@ import com.solovova.smart_office_main.dataclass.SensorIndicatorDataRecord
 import com.solovova.smart_office_main.dataclass.SensorIndicatorTypeEnum
 import com.solovova.smart_office_main.service.defs.SensorIndicatorDef
 import com.solovova.smart_office_main.soviews.SensorIndicatorButton
+import org.json.JSONObject
 
-class SensorIndicator(_typeEnum: SensorIndicatorTypeEnum, _sensor: Sensor) {
+class SensorIndicator(_sensor: Sensor, _typeEnum: SensorIndicatorTypeEnum) {
     private var indicatorValue: Double
     private var indicatorOldValue: Double
     private var indicatorValueTime: Long
@@ -71,6 +72,10 @@ class SensorIndicator(_typeEnum: SensorIndicatorTypeEnum, _sensor: Sensor) {
 
     fun eventDataIn(sensorIndicatorDataRecord: SensorIndicatorDataRecord) {
         this.setIndicatorValue(sensorIndicatorDataRecord.indicatorValue)
+    }
+
+    fun initFromJSON(jObject: JSONObject) {
+        this.indicatorValue = jObject.getDouble("value")
     }
 
 

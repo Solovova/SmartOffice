@@ -180,13 +180,22 @@ class SensorContainer {
     }
 
     //Test
-     fun initFromTestSensorContainer() {
+    private fun initFromJSON(jObject: JSONObject) {
+        var jsonSensors = jObject.getJSONArray("sensors")
+        for(ind in 0 until jsonSensors.length() ) {
+            var jsonSensor = jsonSensors.getJSONObject(ind)
+            val sensorID = jsonSensor.getString("sensorID")
+            val sensor = Sensor(this, sensorID )
+            sensor.initFromJSON(jsonSensor)
+            sensors[sensorID] = sensor
+        }
+    }
 
+    fun loadFromTestData() {
         try {
             val am = app?.assets
             if (am != null) {
-                Log.i("READ","111")
-                val inputStream:InputStream = am.open("raw/test_data.json")
+                val inputStream: InputStream = am.open("raw/test_data.json")
                 val inputStreamReader = InputStreamReader(inputStream)
                 val sb = StringBuilder()
                 var line: String?
@@ -197,33 +206,11 @@ class SensorContainer {
                     line = br.readLine()
                 }
                 br.close()
-
                 val jObjectTest = JSONObject(sb.toString())
-                Log.i("READ",sb.toString())
-                Log.i("READ",jObjectTest.toString())
+                this.initFromJSON(jObjectTest)
             }
-
-        } catch (e:Exception){
-            Log.i("READ",e.toString())
+        } catch (e: Exception) {
+            Log.i("READ", e.toString())
         }
-
-
-
-
-
-
-
-
-
-//        &quot; sensors" : [
-//                          {"sensorID" : "id001",
-//                           "sensorName" : "Room 1",
-//                           "indicators" : []}]
-//        }"
-        //var testSensorContainer = TestSensorContainer()
-        //Log.i("TEST",testSensorContainer.getJSON().toString())
-        //for (sensor in testSensorContainer.sensors) {
-        //    //val newSensor = Sensor(sensor.)
-        //}
     }
 }

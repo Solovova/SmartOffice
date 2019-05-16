@@ -1,1 +1,11 @@
-{ "name": "test name" }
+{ "name": "test name",
+  "sensors": [{"sensorID": "id001",
+               "sensorName": "Room 1",
+               "indicators": [{"type" : 0, "value":  21.0 },
+                              {"type" : 1, "value":  20.0 }]
+              },
+              {"sensorID": "id002",
+               "sensorName": "Room 2",
+               "indicators": [{"type" : 0, "value":  22.0 },
+                              {"type" : 1, "value":  23.0 }]
+    }]}

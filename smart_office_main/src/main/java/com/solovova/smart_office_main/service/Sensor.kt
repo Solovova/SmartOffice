@@ -6,6 +6,7 @@ import com.solovova.smart_office_main.fragments.FragmentSensor
 import com.solovova.smart_office_main.soviews.SensorButton
 import com.solovova.smart_office_main.soviews.SensorIndicatorButton
 import com.solovova.smart_office_main.dataclass.SensorIndicatorDataRecord
+import org.json.JSONObject
 
 class Sensor(_sensorContainer: SensorContainer, _sensorID: String) {
     private var indicators = mutableListOf<SensorIndicator>()
@@ -64,7 +65,7 @@ class Sensor(_sensorContainer: SensorContainer, _sensorID: String) {
     fun testGenerateData(testSensorIndicatorTypeEnum : List<SensorIndicatorTypeEnum>) {
         var sensorIndicator: SensorIndicator
         for (ind in 0 until testSensorIndicatorTypeEnum.size) {
-            sensorIndicator = SensorIndicator(testSensorIndicatorTypeEnum[ind], this)
+            sensorIndicator = SensorIndicator(this, testSensorIndicatorTypeEnum[ind])
             sensorIndicator.testGenerateData()
             indicators.add(sensorIndicator)
         }
@@ -98,6 +99,18 @@ class Sensor(_sensorContainer: SensorContainer, _sensorID: String) {
 
     fun deleteIndicators() {
         this.indicators =  mutableListOf<SensorIndicator>()
+    }
+
+    fun initFromJSON(jObject: JSONObject) {
+        this.sensorName = jObject.getString("sensorName")
+        var jsonSensorIndicators = jObject.getJSONArray("indicators")
+        for(ind in 0 until jsonSensorIndicators.length() ) {
+            var jsonSensorIndicator = jsonSensorIndicators.getJSONObject(ind)
+            val type = SensorIndicatorTypeEnum.values()[jsonSensorIndicator.getInt("type")]
+            val sensorIndicator = SensorIndicator(this, type )
+            sensorIndicator.initFromJSON(jsonSensorIndicator)
+            indicators.add(sensorIndicator)
+        }
     }
 
 }

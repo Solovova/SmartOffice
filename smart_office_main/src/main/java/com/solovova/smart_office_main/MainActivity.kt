@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         (application as SOApplication).mainActivity = this
 
         if ((application as SOApplication).sensorContainer.testModeTestData.compareTo("on") == 0)
-            (application as SOApplication).sensorContainer.initFromTestSensorContainer()
+            (application as SOApplication).sensorContainer.loadFromTestData()
 
         if (savedInstanceState == null) {
             //(application as SOApplication).dataContainer!!.load()
