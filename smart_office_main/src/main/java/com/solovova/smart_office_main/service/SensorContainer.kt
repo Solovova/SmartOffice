@@ -45,7 +45,7 @@ class SensorContainer {
                 try {
                     Log.i("RECEIVE", strJSON)
                     val sensorIndicatorDataRecord = SensorIndicatorDataRecord(JSONObject(strJSON))
-                    app?.mainActivity?.runOnUiThread { this.eventDataIn(sensorIndicatorDataRecord) }
+                    app.mainActivity?.runOnUiThread { this.eventDataIn(sensorIndicatorDataRecord) }
                 } catch (e: Exception) {
                 }
 
