@@ -1,5 +1,6 @@
 package com.solovova.smart_office_main.service
 
+import android.os.SystemClock
 import android.widget.LinearLayout
 import com.microsoft.signalr.HubConnection
 import com.microsoft.signalr.HubConnectionState
@@ -16,7 +17,6 @@ import android.util.Log
 import com.microsoft.signalr.HubConnectionBuilder
 import org.json.JSONArray
 import org.json.JSONObject
-
 
 class SensorContainer {
     private var myThread: Thread? = null
@@ -74,23 +74,23 @@ class SensorContainer {
 
         //end hub connection
 
-//        this.myThread = Thread(
-//            Runnable {
-//                while (true) {
-//                    val hubConnection = this.hubConnection
-//                    if (hubConnection != null) {
-//                        if (hubConnection.connectionState === HubConnectionState.DISCONNECTED) {
-//                            Log.i("RECEIVE", "DISCONNECTED")
-//                        }
-//                        if (hubConnection.connectionState === HubConnectionState.CONNECTED) {
-//                            Log.i("RECEIVE", "CONNECTED")
-//                        }
-//                    }
-//                    SystemClock.sleep(1000)
-//                }
-//            }
-        //     )
-        //       this.myThread?.start()
+        this.myThread = Thread(
+            Runnable {
+                while (true) {
+                    val hubConnection = this.hubConnection
+                    if (hubConnection != null) {
+                        if (hubConnection.connectionState === HubConnectionState.DISCONNECTED) {
+                            Log.i("RECEIVE", "DISCONNECTED")
+                        }
+                        if (hubConnection.connectionState === HubConnectionState.CONNECTED) {
+                            Log.i("RECEIVE", "CONNECTED")
+                        }
+                    }
+                    SystemClock.sleep(1000)
+                }
+            }
+        )
+        this.myThread?.start()
     }
 
     fun setViewContainer (viewContainer: LinearLayout) {
@@ -193,7 +193,7 @@ class SensorContainer {
 
     fun loadFromTestData() {
         try {
-            val am = app?.assets
+            val am = app.assets
             if (am != null) {
                 val inputStream: InputStream = am.open("raw/test_data.json")
                 val inputStreamReader = InputStreamReader(inputStream)

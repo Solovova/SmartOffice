@@ -78,8 +78,6 @@ class Def {
                 defTextDescribe = "\tDescribe for Humidity"
             }
             sensorIndicatorDef[SensorIndicatorTypeEnum.Humidity] = tmpDataIndicatorTypeDef
-
-
             return sensorIndicatorDef
         }
     }
