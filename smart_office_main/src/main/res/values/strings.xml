@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SmartOffice</string>
+    <string name="dash">-</string>
 </resources>
