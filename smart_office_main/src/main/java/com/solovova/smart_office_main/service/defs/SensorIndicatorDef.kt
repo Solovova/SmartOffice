@@ -14,4 +14,6 @@ class SensorIndicatorDef {
     var defDescribeValue: String = ""
     var defDescribe: String = ""
     var defTextDescribe: String = ""
+    var defGraphMaxY: Double = 0.0
+    var defGraphMinY: Double = 0.0
 }

@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.DashPathEffect
 import android.widget.RelativeLayout
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Legend
@@ -17,7 +16,6 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IFillFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.utils.Utils
-import com.solovova.smart_office_main.MainActivity
 import com.solovova.smart_office_main.service.SensorIndicator
 import com.solovova.smart_office_main.R
 import java.util.ArrayList
@@ -30,10 +28,8 @@ class SensorIndicatorGraph(context: Context) : RelativeLayout(context) {
         run {
             // background color
             chart.setBackgroundColor(Color.WHITE)
-
             // disable description text
-            chart.getDescription().setEnabled(false)
-
+            chart.description.isEnabled = false
             // enable touch gestures
             chart.setTouchEnabled(true)
 
@@ -41,87 +37,20 @@ class SensorIndicatorGraph(context: Context) : RelativeLayout(context) {
             //chart.setOnChartValueSelectedListener(this)
             chart.setDrawGridBackground(false)
 
-            // create marker to display box when values are selected
-            //val mv = MyMarkerView(this, R.layout.custom_marker_view)
-
-            // Set the marker to the chart
-            //mv.setChartView(chart)
-            //chart.setMarker(mv)
 
             // enable scaling and dragging
-            chart.setDragEnabled(true)
-            chart.setScaleEnabled(true)
-            // chart.setScaleXEnabled(true);
-            // chart.setScaleYEnabled(true);
+            chart.isDragEnabled = false
+            chart.isScaleXEnabled = false
+            chart.isScaleYEnabled = false
 
             // force pinch zoom along both axis
             chart.setPinchZoom(true)
         }
 
-        val xAxis: XAxis
-        run {
-            // // X-Axis Style // //
-            xAxis = chart.getXAxis()
-
-            // vertical grid lines
-            xAxis.enableGridDashedLine(10f, 10f, 0f)
-        }
-
-        val yAxis: YAxis
-        run {
-            // // Y-Axis Style // //
-            yAxis = chart.getAxisLeft()
-
-            // disable dual axis (only use LEFT axis)
-            chart.getAxisRight().setEnabled(false)
-
-            // horizontal grid lines
-            yAxis.enableGridDashedLine(10f, 10f, 0f)
-
-            // axis range
-            yAxis.axisMaximum = 200f
-            yAxis.axisMinimum = -50f
-        }
-
-
-        run {
-            // // Create Limit Lines // //
-            val llXAxis = LimitLine(9f, "Index 10")
-            llXAxis.lineWidth = 4f
-            llXAxis.enableDashedLine(10f, 10f, 0f)
-            llXAxis.labelPosition = LimitLine.LimitLabelPosition.RIGHT_BOTTOM
-            llXAxis.textSize = 10f
-            //llXAxis.typeface = tfRegular
-
-//            val ll1 = LimitLine(150f, "Upper Limit")
-//            ll1.lineWidth = 4f
-//            ll1.enableDashedLine(10f, 10f, 0f)
-//            ll1.labelPosition = LimitLine.LimitLabelPosition.RIGHT_TOP
-//            ll1.textSize = 10f
-            //ll1.typeface = tfRegular
-
-//            val ll2 = LimitLine(-30f, "Lower Limit")
-//            ll2.lineWidth = 4f
-//            ll2.enableDashedLine(10f, 10f, 0f)
-//            ll2.labelPosition = LimitLine.LimitLabelPosition.RIGHT_BOTTOM
-//            ll2.textSize = 10f
-            //ll2.typeface = tfRegular
-
-            // draw limit lines behind data instead of on top
-            yAxis.setDrawLimitLinesBehindData(true)
-            xAxis.setDrawLimitLinesBehindData(true)
-
-            // add limit lines
-            //yAxis.addLimitLine(ll1)
-            //yAxis.addLimitLine(ll2)
-            //xAxis.addLimitLine(llXAxis);
-        }
-
-        //setDataTest(45, 180f)
-        setData()
+        //setData()
 
         // draw points over time
-        chart.animateX(1500)
+        chart.animateX(0)
 
         // get the legend (only possible after setting data)
         val l = chart.legend
@@ -149,92 +78,70 @@ class SensorIndicatorGraph(context: Context) : RelativeLayout(context) {
     private fun refreshAll() {
         val sensorIndicator = this.sensorIndicator
         if (sensorIndicator != null) {
-            //val dataIndicatorTypeDef =  sensorIndicator.sensor.sensorContainer.getDataIndicatorTypeDef(sensorIndicator.typeEnum)
+            val xAxis: XAxis
+            run {
+                // // X-Axis Style // //
+                xAxis = chart.xAxis
+                // vertical grid lines
+                xAxis.enableGridDashedLine(10f, 10f, 0f)
+            }
+
+            val yAxis: YAxis
+            run {
+                // // Y-Axis Style // //
+                yAxis = chart.axisLeft
+                // disable dual axis (only use LEFT axis)
+                chart.axisRight.isEnabled = false
+                // horizontal grid lines
+                yAxis.enableGridDashedLine(10f, 10f, 0f)
+                // axis range
+                yAxis.axisMaximum = sensorIndicator.sensorIndicatorDef.defGraphMaxY.toFloat()
+                yAxis.axisMinimum = sensorIndicator.sensorIndicatorDef.defGraphMinY.toFloat()
+            }
+
+            run {
+
+                val ll1 = LimitLine(
+                    sensorIndicator.sensorIndicatorDef.defAlarmBorder[0].toFloat(),
+                    sensorIndicator.sensorIndicatorDef.defAlarmBorder[0].toString()
+                )
+                ll1.lineWidth = 2f
+                ll1.enableDashedLine(10f, 10f, 0f)
+                ll1.labelPosition = LimitLine.LimitLabelPosition.RIGHT_TOP
+                ll1.textSize = 10f
+                ll1.lineColor = ContextCompat.getColor(context, sensorIndicator.sensorIndicatorDef.defTextAlarmIdColor[1])
+
+                val ll2 = LimitLine(
+                    sensorIndicator.sensorIndicatorDef.defAlarmBorder[1].toFloat(),
+                    sensorIndicator.sensorIndicatorDef.defAlarmBorder[1].toString()
+                )
+                ll2.lineWidth = 2f
+                ll2.enableDashedLine(10f, 10f, 0f)
+                ll2.labelPosition = LimitLine.LimitLabelPosition.RIGHT_BOTTOM
+                ll2.textSize = 10f
+                ll2.lineColor = ContextCompat.getColor(context, sensorIndicator.sensorIndicatorDef.defTextAlarmIdColor[2])
+
+                // draw limit lines behind data instead of on top
+                yAxis.setDrawLimitLinesBehindData(true)
+                xAxis.setDrawLimitLinesBehindData(true)
+
+                // add limit lines
+                yAxis.addLimitLine(ll1)
+                yAxis.addLimitLine(ll2)
+            }
 
             refreshValue()
         }
     }
 
+
     fun setSensorIndicator(_sensorIndicator: SensorIndicator) {
         if (this.sensorIndicator != _sensorIndicator) {
             this.sensorIndicator = _sensorIndicator
-
             this.refreshAll()
         }
     }
 
-    private fun setDataTest(count: Int, range: Float) {
-
-        val values = ArrayList<Entry>()
-
-        for (i in 0 until count) {
-
-            val val0 = (Math.random() * range).toFloat() - 30
-            values.add(Entry(i.toFloat(), val0, ContextCompat.getDrawable(this.context, R.drawable.star)))
-        }
-
-        val set1: LineDataSet
-
-        if (chart.data != null && chart.data.dataSetCount > 0) {
-            set1 = chart.data.getDataSetByIndex(0) as LineDataSet
-            set1.values = values
-            set1.notifyDataSetChanged()
-            chart.data.notifyDataChanged()
-            chart.notifyDataSetChanged()
-        } else {
-            // create a dataset and give it a type
-            set1 = LineDataSet(values, "DataSet 1")
-
-            set1.setDrawIcons(false)
-
-            // draw dashed line
-            set1.enableDashedLine(10f, 5f, 0f)
-
-            // black lines and points
-            set1.color = Color.BLACK
-            set1.setCircleColor(Color.BLACK)
-
-            // line thickness and point size
-            set1.lineWidth = 1f
-            set1.circleRadius = 3f
-
-            // draw points as solid circles
-            set1.setDrawCircleHole(false)
-
-            // customize legend entry
-            set1.formLineWidth = 1f
-            set1.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
-            set1.formSize = 15f
-
-            // text size of values
-            set1.valueTextSize = 9f
-
-            // draw selection line as dashed
-            set1.enableDashedHighlightLine(10f, 5f, 0f)
-
-            // set the filled area
-            set1.setDrawFilled(true)
-            set1.fillFormatter = IFillFormatter { dataSet, dataProvider -> chart.axisLeft.axisMinimum }
-
-            // set color of filled area
-            if (Utils.getSDKInt() >= 18) {
-                // drawables only supported on api level 18 and above
-                val drawable = ContextCompat.getDrawable(this.context, R.drawable.fade_red)
-                set1.fillDrawable = drawable
-            } else {
-                set1.fillColor = Color.BLACK
-            }
-
-            val dataSets = ArrayList<ILineDataSet>()
-            dataSets.add(set1) // add the data sets
-
-            // create a data object with the data sets
-            val data = LineData(dataSets)
-
-            // set data
-            chart.data = data
-        }
-    }
 
     private fun setData() {
 
@@ -245,33 +152,10 @@ class SensorIndicatorGraph(context: Context) : RelativeLayout(context) {
         if (sensorIndicator != null) {
             var startIndex = 0
             if (sensorIndicator.dataset.size>50) startIndex = sensorIndicator.dataset.size - 50
-            var minY = 1000000.0f
-            var maxY = -1000000.0f
-
 
             for (i in startIndex until sensorIndicator.dataset.size) {
-
-                val val0 = sensorIndicator.dataset[i].toFloat() //(Math.random() * range).toFloat() - 30
-                if (val0 < minY) minY =val0
-                if (val0 > maxY) maxY =val0
-
+                val val0 = sensorIndicator.dataset[i].toFloat()
                 values.add(Entry(i.toFloat(), val0, ContextCompat.getDrawable(this.context, R.drawable.star)))
-            }
-
-            val yAxis: YAxis
-            run {
-                // // Y-Axis Style // //
-                yAxis = chart.getAxisLeft()
-
-                // disable dual axis (only use LEFT axis)
-                chart.getAxisRight().setEnabled(false)
-
-                // horizontal grid lines
-                yAxis.enableGridDashedLine(10f, 10f, 0f)
-
-                // axis range
-                yAxis.axisMaximum = maxY
-                yAxis.axisMinimum = minY
             }
         }
 
@@ -299,25 +183,27 @@ class SensorIndicatorGraph(context: Context) : RelativeLayout(context) {
 
             // line thickness and point size
             set1.lineWidth = 1f
-            set1.circleRadius = 3f
-
+            //set1.circleRadius = 3f
+            set1.setDrawCircles(false)
+            set1.setDrawValues(false)
+            set1.label=""
             // draw points as solid circles
             set1.setDrawCircleHole(false)
 
             // customize legend entry
-            set1.formLineWidth = 1f
-            set1.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
-            set1.formSize = 15f
+            //set1.formLineWidth = 1f
+            //set1.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
+            //set1.formSize = 15f
 
             // text size of values
-            set1.valueTextSize = 9f
+            //set1.valueTextSize = 9f
 
             // draw selection line as dashed
             set1.enableDashedHighlightLine(10f, 5f, 0f)
 
             // set the filled area
             set1.setDrawFilled(true)
-            set1.fillFormatter = IFillFormatter { dataSet, dataProvider -> chart.axisLeft.axisMinimum }
+            set1.fillFormatter = IFillFormatter { _, _ -> chart.axisLeft.axisMinimum }
 
             // set color of filled area
             if (Utils.getSDKInt() >= 18) {
