@@ -1,10 +1,12 @@
 package com.solovova.smart_office_main.service
 
 import android.os.SystemClock
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.solovova.smart_office_main.dataclass.SensorIndicatorDataRecord
 import com.solovova.smart_office_main.dataclass.SensorIndicatorTypeEnum
 import com.solovova.smart_office_main.service.defs.SensorIndicatorDef
 import com.solovova.smart_office_main.soviews.SensorIndicatorButton
+import com.solovova.smart_office_main.soviews.SensorIndicatorGraph
 import org.json.JSONObject
 
 class SensorIndicator(_sensor: Sensor, _typeEnum: SensorIndicatorTypeEnum) {
@@ -21,6 +23,10 @@ class SensorIndicator(_sensor: Sensor, _typeEnum: SensorIndicatorTypeEnum) {
 
 
     private var sensorIndicatorButton: SensorIndicatorButton? = null
+
+    private var sensorIndicatorGraph: SensorIndicatorGraph? = null
+    private var sensorIndicatorGraphContainer: ConstraintLayout? = null
+
 
     init {
         this.sensorIndicatorDef =  _sensor.sensorContainer.getDataIndicatorTypeDef(this.typeEnum)
@@ -78,5 +84,28 @@ class SensorIndicator(_sensor: Sensor, _typeEnum: SensorIndicatorTypeEnum) {
         this.indicatorValue = jObject.getDouble("value")
     }
 
+    fun setLinkToViewGraph(sensorIndicatorGraphContainer: ConstraintLayout) {
+        if (this.sensorIndicatorGraphContainer != sensorIndicatorGraphContainer) {
+            this.sensorIndicatorGraphContainer = sensorIndicatorGraphContainer
+            this.createSensorIndicatorGraph()
+        }
+    }
 
+    private fun createSensorIndicatorGraph() {
+        val sensorIndicatorGraphContainer = this.sensorIndicatorGraphContainer
+        if (sensorIndicatorGraphContainer != null) {
+            if (sensorIndicatorGraphContainer.childCount > 0) sensorIndicatorGraphContainer.removeAllViews()
+            val params: ConstraintLayout.LayoutParams = ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.MATCH_PARENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+            )
+
+            val newSensorIndicatorGraph = SensorIndicatorGraph(sensorIndicatorGraphContainer.context)
+            params.setMargins(5, 5, 5, 5)
+            newSensorIndicatorGraph.layoutParams = params
+            sensorIndicatorGraphContainer.addView(newSensorIndicatorGraph)
+            this.sensorIndicatorGraph = newSensorIndicatorGraph
+            sensorIndicatorGraphContainer.invalidate()
+        }
+    }
 }

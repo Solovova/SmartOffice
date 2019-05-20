@@ -34,8 +34,8 @@ class FragmentSensorIndicatorInfo : FragmentParent() {
                 topTxText.text = Editable.Factory.getInstance().newEditable(sensorIndicator.sensorIndicatorDef.defTextDescribe)
                 // Set value
                 val textRect1 = mView.findViewById(R.id.textRect1) as ImageView
-                val param = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
-                //val param = textRect1.layoutParams as ConstraintLayout.LayoutParams
+                //val param = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+                val param = textRect1.layoutParams as ConstraintLayout.LayoutParams
                 //Log.i("FERROR",sensorIndicator.getAlarmCode().toString())
                 when (sensorIndicator.getAlarmCode()) {
                     0 -> {
@@ -70,6 +70,10 @@ class FragmentSensorIndicatorInfo : FragmentParent() {
 
                 val buttonOk = mView.findViewById(R.id.buttonOk) as Button
                 buttonOk.setOnClickListener(onClickListenerBack)
+
+                // Graph
+
+                sensorIndicator.setLinkToViewGraph(mView.findViewById(R.id.graphContainer))
             }
         }
     }
