@@ -10,28 +10,23 @@ import com.solovova.smart_office_main.soviews.SensorIndicatorButton
 import com.solovova.smart_office_main.soviews.SensorIndicatorGraph
 import org.json.JSONObject
 
-class SensorIndicator(_sensor: Sensor, _typeEnum: SensorIndicatorTypeEnum) {
+//All good
+//ToDo change arrow Up Down in SensorIndicatorButton
+class SensorIndicator(val sensor: Sensor, var typeEnum: SensorIndicatorTypeEnum) {
     private var indicatorValue: Double
     private var indicatorOldValue: Double
     private var indicatorValueTime: Long
-    var sensorIndicatorDef: SensorIndicatorDef
+    var sensorIndicatorDef: SensorIndicatorDef = sensor.sensorContainer.getDataIndicatorTypeDef(this.typeEnum)
     var dataset : MutableList<Double>
-
-    var typeEnum: SensorIndicatorTypeEnum = _typeEnum
-    val sensor: Sensor = _sensor
-
 
     private var alarmBorder: Array<Double>
 
-
-    private var sensorIndicatorButton: SensorIndicatorButton? = null
-
-    private var sensorIndicatorGraph: SensorIndicatorGraph? = null
-    private var sensorIndicatorGraphContainer: ConstraintLayout? = null
+    private var mSensorIndicatorButton: SensorIndicatorButton? = null
+    private var mSensorIndicatorGraph: SensorIndicatorGraph? = null
+    private var mSensorIndicatorGraphContainer: ConstraintLayout? = null
 
 
     init {
-        this.sensorIndicatorDef =  _sensor.sensorContainer.getDataIndicatorTypeDef(this.typeEnum)
         this.alarmBorder = sensorIndicatorDef.defAlarmBorder.clone()
         this.indicatorValue = sensorIndicatorDef.defValue
         this.indicatorOldValue = 0.0
@@ -39,19 +34,15 @@ class SensorIndicator(_sensor: Sensor, _typeEnum: SensorIndicatorTypeEnum) {
         this.dataset = mutableListOf()
     }
 
-    fun testGenerateData() {
-
-    }
-
-    fun setLinkToSensorIndicatorButton(_sensorIndicatorButton: SensorIndicatorButton) {
-        if (this.sensorIndicatorButton !=_sensorIndicatorButton) {
-            this.sensorIndicatorButton = _sensorIndicatorButton
-            _sensorIndicatorButton.setSensorIndicator(this)
+    fun setLinkToSensorIndicatorButton(sensorIndicatorButton: SensorIndicatorButton) {
+        if (this.mSensorIndicatorButton !=sensorIndicatorButton) {
+            this.mSensorIndicatorButton = sensorIndicatorButton
+            sensorIndicatorButton.setSensorIndicator(this)
         }
     }
 
     fun getAlarmCode():Int {
-        val dataIndicatorTypeDef =  this.sensor.sensorContainer.getDataIndicatorTypeDef(this.typeEnum)
+        val dataIndicatorTypeDef =  this.sensorIndicatorDef
         when (dataIndicatorTypeDef.defTypeOfAlarm) {
             0 -> {
                 if (this.indicatorValue <= this.alarmBorder[0]) return 1
@@ -71,13 +62,13 @@ class SensorIndicator(_sensor: Sensor, _typeEnum: SensorIndicatorTypeEnum) {
         return this.indicatorValue
     }
 
-    private fun setIndicatorValue(_value: Double){
+    private fun setIndicatorValue(value: Double){
         this.indicatorOldValue = this.indicatorValue
         this.indicatorValueTime = SystemClock.currentThreadTimeMillis()
-        this.indicatorValue = _value
-        this.dataset.add(_value)
-        sensorIndicatorButton?.refreshValue()
-        sensorIndicatorGraph?.refreshValue()
+        this.indicatorValue = value
+        this.dataset.add(value)
+        mSensorIndicatorButton?.refreshValue()
+        mSensorIndicatorGraph?.refreshValue()
         sensor.onChangeSensorIndicator()
     }
 
@@ -90,18 +81,16 @@ class SensorIndicator(_sensor: Sensor, _typeEnum: SensorIndicatorTypeEnum) {
     }
 
     fun setLinkToViewGraph(sensorIndicatorGraphContainer: ConstraintLayout) {
-        if (this.sensorIndicatorGraphContainer != sensorIndicatorGraphContainer) {
+        if (this.mSensorIndicatorGraphContainer != sensorIndicatorGraphContainer) {
             this.sensor.sensorContainer.setLinkToGraphNull()
-            this.sensorIndicatorGraphContainer = sensorIndicatorGraphContainer
+            this.mSensorIndicatorGraphContainer = sensorIndicatorGraphContainer
             this.createSensorIndicatorGraph()
         }
     }
 
     private fun createSensorIndicatorGraph() {
-        val sensorIndicatorGraphContainer = this.sensorIndicatorGraphContainer
+        val sensorIndicatorGraphContainer = this.mSensorIndicatorGraphContainer
         if (sensorIndicatorGraphContainer != null) {
-
-
             if (sensorIndicatorGraphContainer.childCount > 0) sensorIndicatorGraphContainer.removeAllViews()
             val params: RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.MATCH_PARENT,
@@ -112,13 +101,18 @@ class SensorIndicator(_sensor: Sensor, _typeEnum: SensorIndicatorTypeEnum) {
             params.setMargins(5, 5, 5, 5)
             newSensorIndicatorGraph.layoutParams = params
             sensorIndicatorGraphContainer.addView(newSensorIndicatorGraph)
-            this.sensorIndicatorGraph = newSensorIndicatorGraph
+            this.mSensorIndicatorGraph = newSensorIndicatorGraph
             newSensorIndicatorGraph.setSensorIndicator(this)
             sensorIndicatorGraphContainer.invalidate()
         }
     }
 
     fun setLinkToGraphNull() {
-        this.sensorIndicatorGraphContainer = null
+        this.mSensorIndicatorGraphContainer = null
+    }
+
+    //Test functions
+    fun testGenerateData() {
+
     }
 }

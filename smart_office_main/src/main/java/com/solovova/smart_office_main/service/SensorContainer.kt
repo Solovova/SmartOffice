@@ -18,13 +18,15 @@ import com.microsoft.signalr.HubConnectionBuilder
 import org.json.JSONArray
 import org.json.JSONObject
 
+//All good
 class SensorContainer {
     private var myThread: Thread? = null
     var sensors = mutableMapOf<String, Sensor>()
     private var sensorIndicatorDef = mutableMapOf<SensorIndicatorTypeEnum, SensorIndicatorDef>()
-    private var viewContainer : LinearLayout? = null
-    var testModeTestData:String
+    private var mViewContainer : LinearLayout? = null
     var app: SOApplication
+
+    var testModeTestData:String
 
 
     //hubConnection
@@ -95,21 +97,22 @@ class SensorContainer {
     }
 
     fun setViewContainer (viewContainer: LinearLayout) {
-        this.viewContainer = viewContainer
+        this.mViewContainer = viewContainer
         this.createSensorButtons()
     }
 
     private fun createSensorButtons(){
-        val viewContainer = this.viewContainer
+        val viewContainer = this.mViewContainer
         if (viewContainer != null) {
             if (viewContainer.childCount > 0) viewContainer.removeAllViews()
-            val params: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
+
             for (id in  sensors.keys) {
                 val sensor: Sensor? = sensors[id]
                 if (sensor != null){
+                    val params: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    )
                     val newButton = SensorButton(viewContainer.context)
                     params.setMargins(0, 0, 0, 0)
                     newButton.layoutParams = params
@@ -127,15 +130,13 @@ class SensorContainer {
         return dataIndicatorTypeDef
     }
 
-
-
     private fun eventDataIn(sensorIndicatorDataRecord: SensorIndicatorDataRecord) {
         val sensor = this.sensors[sensorIndicatorDataRecord.sensorId]
         sensor?.eventDataIn(sensorIndicatorDataRecord)
     }
 
     fun onChangeSensor(){
-
+        //ToDo out to widget
     }
 
     fun deleteSensor(sensor: Sensor) {
