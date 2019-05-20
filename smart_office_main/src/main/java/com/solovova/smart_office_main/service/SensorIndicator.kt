@@ -15,6 +15,7 @@ class SensorIndicator(_sensor: Sensor, _typeEnum: SensorIndicatorTypeEnum) {
     private var indicatorOldValue: Double
     private var indicatorValueTime: Long
     var sensorIndicatorDef: SensorIndicatorDef
+    var dataset : MutableList<Double>
 
     var typeEnum: SensorIndicatorTypeEnum = _typeEnum
     val sensor: Sensor = _sensor
@@ -35,6 +36,7 @@ class SensorIndicator(_sensor: Sensor, _typeEnum: SensorIndicatorTypeEnum) {
         this.indicatorValue = sensorIndicatorDef.defValue
         this.indicatorOldValue = 0.0
         this.indicatorValueTime = 0
+        this.dataset = mutableListOf()
     }
 
     fun testGenerateData() {
@@ -73,7 +75,9 @@ class SensorIndicator(_sensor: Sensor, _typeEnum: SensorIndicatorTypeEnum) {
         this.indicatorOldValue = this.indicatorValue
         this.indicatorValueTime = SystemClock.currentThreadTimeMillis()
         this.indicatorValue = _value
+        this.dataset.add(_value)
         sensorIndicatorButton?.refreshValue()
+        sensorIndicatorGraph?.refreshValue()
         sensor.onChangeSensorIndicator()
     }
 
@@ -109,6 +113,7 @@ class SensorIndicator(_sensor: Sensor, _typeEnum: SensorIndicatorTypeEnum) {
             newSensorIndicatorGraph.layoutParams = params
             sensorIndicatorGraphContainer.addView(newSensorIndicatorGraph)
             this.sensorIndicatorGraph = newSensorIndicatorGraph
+            newSensorIndicatorGraph.setSensorIndicator(this)
             sensorIndicatorGraphContainer.invalidate()
         }
     }

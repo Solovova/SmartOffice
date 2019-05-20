@@ -15,9 +15,9 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IFillFormatter
-import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.utils.Utils
+import com.solovova.smart_office_main.MainActivity
 import com.solovova.smart_office_main.service.SensorIndicator
 import com.solovova.smart_office_main.R
 import java.util.ArrayList
@@ -117,7 +117,8 @@ class SensorIndicatorGraph(context: Context) : RelativeLayout(context) {
             //xAxis.addLimitLine(llXAxis);
         }
 
-        setData(45, 180f)
+        //setDataTest(45, 180f)
+        setData()
 
         // draw points over time
         chart.animateX(1500)
@@ -140,14 +141,15 @@ class SensorIndicatorGraph(context: Context) : RelativeLayout(context) {
     fun refreshValue() {
         val sensorIndicator = this.sensorIndicator
         if (sensorIndicator != null) {
-
+            setData()
+            chart.invalidate()
         }
     }
 
     private fun refreshAll() {
         val sensorIndicator = this.sensorIndicator
         if (sensorIndicator != null) {
-            val dataIndicatorTypeDef =  sensorIndicator.sensor.sensorContainer.getDataIndicatorTypeDef(sensorIndicator.typeEnum)
+            //val dataIndicatorTypeDef =  sensorIndicator.sensor.sensorContainer.getDataIndicatorTypeDef(sensorIndicator.typeEnum)
 
             refreshValue()
         }
@@ -161,7 +163,7 @@ class SensorIndicatorGraph(context: Context) : RelativeLayout(context) {
         }
     }
 
-    private fun setData(count: Int, range: Float) {
+    private fun setDataTest(count: Int, range: Float) {
 
         val values = ArrayList<Entry>()
 
@@ -233,6 +235,87 @@ class SensorIndicatorGraph(context: Context) : RelativeLayout(context) {
             chart.data = data
         }
     }
+
+    private fun setData() {
+
+
+        val values = ArrayList<Entry>()
+
+        val sensorIndicator = this.sensorIndicator
+        if (sensorIndicator != null) {
+
+            for (i in 0 until sensorIndicator.dataset.size) {
+
+                val val0 = sensorIndicator.dataset[i] //(Math.random() * range).toFloat() - 30
+                values.add(Entry(i.toFloat(), val0.toFloat(), ContextCompat.getDrawable(this.context, R.drawable.star)))
+            }
+        }
+
+
+        val set1: LineDataSet
+
+        if (chart.data != null && chart.data.dataSetCount > 0) {
+            set1 = chart.data.getDataSetByIndex(0) as LineDataSet
+            set1.values = values
+            set1.notifyDataSetChanged()
+            chart.data.notifyDataChanged()
+            chart.notifyDataSetChanged()
+        } else {
+            // create a dataset and give it a type
+            set1 = LineDataSet(values, "DataSet 1")
+
+            set1.setDrawIcons(false)
+
+            // draw dashed line
+            set1.enableDashedLine(10f, 5f, 0f)
+
+            // black lines and points
+            set1.color = Color.BLACK
+            set1.setCircleColor(Color.BLACK)
+
+            // line thickness and point size
+            set1.lineWidth = 1f
+            set1.circleRadius = 3f
+
+            // draw points as solid circles
+            set1.setDrawCircleHole(false)
+
+            // customize legend entry
+            set1.formLineWidth = 1f
+            set1.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
+            set1.formSize = 15f
+
+            // text size of values
+            set1.valueTextSize = 9f
+
+            // draw selection line as dashed
+            set1.enableDashedHighlightLine(10f, 5f, 0f)
+
+            // set the filled area
+            set1.setDrawFilled(true)
+            set1.fillFormatter = IFillFormatter { dataSet, dataProvider -> chart.axisLeft.axisMinimum }
+
+            // set color of filled area
+            if (Utils.getSDKInt() >= 18) {
+                // drawables only supported on api level 18 and above
+                val drawable = ContextCompat.getDrawable(this.context, R.drawable.fade_red)
+                set1.fillDrawable = drawable
+            } else {
+                set1.fillColor = Color.BLACK
+            }
+
+            val dataSets = ArrayList<ILineDataSet>()
+            dataSets.add(set1) // add the data sets
+
+            // create a data object with the data sets
+            val data = LineData(dataSets)
+
+            // set data
+            chart.data = data
+        }
+    }
+
+
 
 
 }

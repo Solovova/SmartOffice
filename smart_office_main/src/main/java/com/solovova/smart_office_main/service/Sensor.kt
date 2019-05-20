@@ -94,6 +94,7 @@ class Sensor(_sensorContainer: SensorContainer, _sensorID: String) {
     fun onChangeSensorIndicator(){
         sensorButton?.refreshValue()
         fragmentSensor?.refreshHead()
+
         sensorContainer.onChangeSensor()
     }
 
