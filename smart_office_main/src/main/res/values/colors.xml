@@ -8,6 +8,7 @@
     <color name="colorSOBlack">#323232</color>
     <color name="colorSOGrey">#515151</color>
     <color name="colorSOGreyLight">#818181</color>
+    <color name="colorSOGreyVeryLight">#E0E0E0</color>
     <color name="colorSOYellow">#f7b200</color>
     <color name="colorSORed">#f46161</color>
     <color name="colorSOGreen">#0ca187</color>

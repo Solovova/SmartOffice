@@ -151,6 +151,16 @@
                     android:id="@+id/button"
                     android:elevation="0dp"
                     android:textAllCaps="false"
+                    style="?android:attr/buttonBarButtonStyle"
+            />
+
+            <ImageView
+                    android:id="@+id/imageUnderline"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/colorSOGreyVeryLight"
+                    app:layout_constraintBottom_toBottomOf="@+id/button"
+                    android:elevation="0dp"
             />
 
 

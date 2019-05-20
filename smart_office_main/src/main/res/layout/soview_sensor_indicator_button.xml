@@ -113,4 +113,14 @@
             app:layout_constraintStart_toStartOf="@+id/textView_0"
             app:layout_constraintTop_toBottomOf="@+id/textView_0" />
 
+    <ImageView
+            android:id="@+id/imageUnderline"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorSOGreyVeryLight"
+            app:layout_constraintTop_toBottomOf="@+id/textView_0"
+            android:layout_marginTop="24dp"
+            android:elevation="0dp"
+    />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

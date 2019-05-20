@@ -1,8 +1,8 @@
 { "name": "test name",
   "sensors": [{"sensorID": "id001",
                "sensorName": "Room 1",
-               "indicators": [{"type" : 0, "value":  21.0 },
-                              {"type" : 1, "value":  801.0 },
+               "indicators": [{"type" : 0, "value":  40.0 },
+                              {"type" : 1, "value":  1801.0 },
                               {"type" : 2, "value":  51.0 },
                               {"type" : 3, "value":  401.0 }]
               },
