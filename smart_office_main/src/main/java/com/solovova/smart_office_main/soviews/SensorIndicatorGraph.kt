@@ -93,18 +93,18 @@ class SensorIndicatorGraph(context: Context) : RelativeLayout(context) {
             llXAxis.textSize = 10f
             //llXAxis.typeface = tfRegular
 
-            val ll1 = LimitLine(150f, "Upper Limit")
-            ll1.lineWidth = 4f
-            ll1.enableDashedLine(10f, 10f, 0f)
-            ll1.labelPosition = LimitLine.LimitLabelPosition.RIGHT_TOP
-            ll1.textSize = 10f
+//            val ll1 = LimitLine(150f, "Upper Limit")
+//            ll1.lineWidth = 4f
+//            ll1.enableDashedLine(10f, 10f, 0f)
+//            ll1.labelPosition = LimitLine.LimitLabelPosition.RIGHT_TOP
+//            ll1.textSize = 10f
             //ll1.typeface = tfRegular
 
-            val ll2 = LimitLine(-30f, "Lower Limit")
-            ll2.lineWidth = 4f
-            ll2.enableDashedLine(10f, 10f, 0f)
-            ll2.labelPosition = LimitLine.LimitLabelPosition.RIGHT_BOTTOM
-            ll2.textSize = 10f
+//            val ll2 = LimitLine(-30f, "Lower Limit")
+//            ll2.lineWidth = 4f
+//            ll2.enableDashedLine(10f, 10f, 0f)
+//            ll2.labelPosition = LimitLine.LimitLabelPosition.RIGHT_BOTTOM
+//            ll2.textSize = 10f
             //ll2.typeface = tfRegular
 
             // draw limit lines behind data instead of on top
@@ -112,8 +112,8 @@ class SensorIndicatorGraph(context: Context) : RelativeLayout(context) {
             xAxis.setDrawLimitLinesBehindData(true)
 
             // add limit lines
-            yAxis.addLimitLine(ll1)
-            yAxis.addLimitLine(ll2)
+            //yAxis.addLimitLine(ll1)
+            //yAxis.addLimitLine(ll2)
             //xAxis.addLimitLine(llXAxis);
         }
 
@@ -243,11 +243,35 @@ class SensorIndicatorGraph(context: Context) : RelativeLayout(context) {
 
         val sensorIndicator = this.sensorIndicator
         if (sensorIndicator != null) {
+            var startIndex = 0
+            if (sensorIndicator.dataset.size>50) startIndex = sensorIndicator.dataset.size - 50
+            var minY = 1000000.0f
+            var maxY = -1000000.0f
 
-            for (i in 0 until sensorIndicator.dataset.size) {
 
-                val val0 = sensorIndicator.dataset[i] //(Math.random() * range).toFloat() - 30
-                values.add(Entry(i.toFloat(), val0.toFloat(), ContextCompat.getDrawable(this.context, R.drawable.star)))
+            for (i in startIndex until sensorIndicator.dataset.size) {
+
+                val val0 = sensorIndicator.dataset[i].toFloat() //(Math.random() * range).toFloat() - 30
+                if (val0 < minY) minY =val0
+                if (val0 > maxY) maxY =val0
+
+                values.add(Entry(i.toFloat(), val0, ContextCompat.getDrawable(this.context, R.drawable.star)))
+            }
+
+            val yAxis: YAxis
+            run {
+                // // Y-Axis Style // //
+                yAxis = chart.getAxisLeft()
+
+                // disable dual axis (only use LEFT axis)
+                chart.getAxisRight().setEnabled(false)
+
+                // horizontal grid lines
+                yAxis.enableGridDashedLine(10f, 10f, 0f)
+
+                // axis range
+                yAxis.axisMaximum = maxY
+                yAxis.axisMinimum = minY
             }
         }
 
