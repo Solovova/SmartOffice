@@ -4,11 +4,16 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="90dp">
+
     <com.mcxtzhang.swipemenulib.SwipeMenuLayout
+            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clickable="true"
-            android:paddingBottom="1dp">
+            android:paddingBottom="1dp"
+            android:focusable="true"
+    >
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -70,7 +75,7 @@
                     app:layout_constraintEnd_toStartOf="@+id/imageView0"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:src="@drawable/ic_sensor_humidity_grey"
+                    android:src="@drawable/ic_sensor_co2_grey"
                     android:elevation="10dp"/>
 
             <ImageView
@@ -84,7 +89,7 @@
                     app:layout_constraintEnd_toStartOf="@+id/imageView1"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:src="@drawable/ic_sensor_co2_grey"
+                    android:src="@drawable/ic_sensor_humidity_grey"
                     android:elevation="10dp"/>
 
             <ImageView
