@@ -152,9 +152,10 @@ class SensorContainer {
         //ToDo take data from testData
         if (this.testModeTestData.compareTo("on") == 0) {
             val testSensorIndicator = mutableListOf(
-                SensorIndicatorTypeEnum.Temperature ,
-                SensorIndicatorTypeEnum.Humidity ,
-                SensorIndicatorTypeEnum.Brightness
+                SensorIndicatorTypeEnum.values()[0] ,
+                SensorIndicatorTypeEnum.values()[1] ,
+                SensorIndicatorTypeEnum.values()[2] ,
+                SensorIndicatorTypeEnum.values()[3]
             )
             sensor.testGenerateData(testSensorIndicator)
         }
