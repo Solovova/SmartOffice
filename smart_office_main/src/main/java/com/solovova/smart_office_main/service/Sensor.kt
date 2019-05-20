@@ -113,4 +113,10 @@ class Sensor(_sensorContainer: SensorContainer, _sensorID: String) {
         }
     }
 
+    fun setLinkToGraphNull() {
+        for (indicator in indicators) {
+            indicator.setLinkToGraphNull()
+        }
+    }
+
 }

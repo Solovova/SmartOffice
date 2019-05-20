@@ -1,6 +1,7 @@
 package com.solovova.smart_office_main.service
 
 import android.os.SystemClock
+import android.widget.RelativeLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.solovova.smart_office_main.dataclass.SensorIndicatorDataRecord
 import com.solovova.smart_office_main.dataclass.SensorIndicatorTypeEnum
@@ -86,6 +87,7 @@ class SensorIndicator(_sensor: Sensor, _typeEnum: SensorIndicatorTypeEnum) {
 
     fun setLinkToViewGraph(sensorIndicatorGraphContainer: ConstraintLayout) {
         if (this.sensorIndicatorGraphContainer != sensorIndicatorGraphContainer) {
+            this.sensor.sensorContainer.setLinkToGraphNull()
             this.sensorIndicatorGraphContainer = sensorIndicatorGraphContainer
             this.createSensorIndicatorGraph()
         }
@@ -94,10 +96,12 @@ class SensorIndicator(_sensor: Sensor, _typeEnum: SensorIndicatorTypeEnum) {
     private fun createSensorIndicatorGraph() {
         val sensorIndicatorGraphContainer = this.sensorIndicatorGraphContainer
         if (sensorIndicatorGraphContainer != null) {
+
+
             if (sensorIndicatorGraphContainer.childCount > 0) sensorIndicatorGraphContainer.removeAllViews()
-            val params: ConstraintLayout.LayoutParams = ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.MATCH_PARENT,
-                ConstraintLayout.LayoutParams.WRAP_CONTENT
+            val params: RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT
             )
 
             val newSensorIndicatorGraph = SensorIndicatorGraph(sensorIndicatorGraphContainer.context)
@@ -107,5 +111,9 @@ class SensorIndicator(_sensor: Sensor, _typeEnum: SensorIndicatorTypeEnum) {
             this.sensorIndicatorGraph = newSensorIndicatorGraph
             sensorIndicatorGraphContainer.invalidate()
         }
+    }
+
+    fun setLinkToGraphNull() {
+        this.sensorIndicatorGraphContainer = null
     }
 }

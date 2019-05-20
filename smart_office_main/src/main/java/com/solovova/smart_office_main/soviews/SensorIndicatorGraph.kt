@@ -3,6 +3,7 @@ package com.solovova.smart_office_main.soviews
 import android.content.Context
 import android.graphics.Color
 import android.graphics.DashPathEffect
+import android.widget.RelativeLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.github.mikephil.charting.charts.LineChart
@@ -21,7 +22,7 @@ import com.solovova.smart_office_main.service.SensorIndicator
 import com.solovova.smart_office_main.R
 import java.util.ArrayList
 
-class SensorIndicatorGraph(context: Context) : ConstraintLayout(context) {
+class SensorIndicatorGraph(context: Context) : RelativeLayout(context) {
     private var sensorIndicator: SensorIndicator? = null
     private var chart: LineChart
 

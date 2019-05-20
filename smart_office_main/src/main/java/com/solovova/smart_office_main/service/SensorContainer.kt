@@ -214,4 +214,12 @@ class SensorContainer {
             Log.i("READ", e.toString())
         }
     }
+
+    fun setLinkToGraphNull() {
+        for (sensor in sensors.values) {
+            sensor.setLinkToGraphNull()
+        }
+    }
+
+
 }
