@@ -41,6 +41,8 @@ class SensorContainer {
         //hub connection
         hubConnection = HubConnectionBuilder.create("http://10.0.2.2:5000/movehub").build()
         //hubConnection = HubConnectionBuilder.create("http://192.168.1.105:5000/movehub").build()
+        //hubConnection = HubConnectionBuilder.create("http://172.20.21.71:5000/movehub").build()
+
         val mHubConnection = this.hubConnection
         if (mHubConnection != null) {
 
